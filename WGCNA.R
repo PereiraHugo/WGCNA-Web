@@ -1,47 +1,40 @@
+#===============================================================================
+#
+#  Code chunk preparation
+#
+#===============================================================================
+
 ### Working directory
 # Set the current working directory as work directory
 setwd(getwd())
 
-### Installation
-
-source("./src/WGCNA_functions.R")
+### Installation packages
+source("./src/WGCNA_installation.R")
 packages_verification(c("BiocManager", "WGCNA"))
 
-#=====================================================================================
-#
-#  Code chunk 1
-#
-#=====================================================================================
-
-
-# Display the current working directory
-getwd();
-# If necessary, change the path below to the directory where the data files are stored. 
-# "." means current directory. On Windows use a forward slash / instead of the usual \.
-workingDir = ".";
-setwd(workingDir); 
 # Load the WGCNA package
 require(WGCNA);
+
+#===============================================================================
+#
+#  Code chunk data input
+#
+#===============================================================================
+
 # The following setting is important, do not omit.
 options(stringsAsFactors = FALSE);
 #Read in the female liver data set
-femData = read.csv("FemaleLiver-Data/LiverFemale3600.csv");
-# Take a quick look at what is in the data set:
-dim(femData);
-names(femData);
+femData = read.csv("Data/FemaleLiver-Data/LiverFemale3600.csv");
 
-
-#=====================================================================================
+#===============================================================================
 #
 #  Code chunk 2
 #
-#=====================================================================================
-
+#===============================================================================
 
 datExpr0 = as.data.frame(t(femData[, -c(1:8)]));
 names(datExpr0) = femData$substanceBXH;
 rownames(datExpr0) = names(femData)[-c(1:8)];
-
 
 #=====================================================================================
 #
@@ -49,17 +42,14 @@ rownames(datExpr0) = names(femData)[-c(1:8)];
 #
 #=====================================================================================
 
-
 gsg = goodSamplesGenes(datExpr0, verbose = 3);
 gsg$allOK
-
 
 #=====================================================================================
 #
 #  Code chunk 4
 #
 #=====================================================================================
-
 
 if (!gsg$allOK)
 {
@@ -72,13 +62,11 @@ if (!gsg$allOK)
   datExpr0 = datExpr0[gsg$goodSamples, gsg$goodGenes]
 }
 
-
 #=====================================================================================
 #
 #  Code chunk 5
 #
 #=====================================================================================
-
 
 sampleTree = hclust(dist(datExpr0), method = "average");
 # Plot the sample tree: Open a graphic output window of size 12 by 9 inches
@@ -90,13 +78,11 @@ par(mar = c(0,4,2,0))
 plot(sampleTree, main = "Sample clustering to detect outliers", sub="", xlab="", cex.lab = 1.5, 
      cex.axis = 1.5, cex.main = 2)
 
-
 #=====================================================================================
 #
 #  Code chunk 6
 #
 #=====================================================================================
-
 
 # Plot a line to show the cut
 abline(h = 15, col = "red");
@@ -109,15 +95,13 @@ datExpr = datExpr0[keepSamples, ]
 nGenes = ncol(datExpr)
 nSamples = nrow(datExpr)
 
-
 #=====================================================================================
 #
 #  Code chunk 7
 #
 #=====================================================================================
 
-
-traitData = read.csv("ClinicalTraits.csv");
+traitData = read.csv("Data/FemaleLiver-Data/ClinicalTraits.csv");
 dim(traitData)
 names(traitData)
 
@@ -133,16 +117,13 @@ femaleSamples = rownames(datExpr);
 traitRows = match(femaleSamples, allTraits$Mice);
 datTraits = allTraits[traitRows, -1];
 rownames(datTraits) = allTraits[traitRows, 1];
-
 collectGarbage();
-
 
 #=====================================================================================
 #
 #  Code chunk 8
 #
 #=====================================================================================
-
 
 # Re-cluster samples
 sampleTree2 = hclust(dist(datExpr), method = "average")
@@ -153,13 +134,10 @@ plotDendroAndColors(sampleTree2, traitColors,
                     groupLabels = names(datTraits), 
                     main = "Sample dendrogram and trait heatmap")
 
-
 #=====================================================================================
 #
 #  Code chunk 9
 #
 #=====================================================================================
 
-
 save(datExpr, datTraits, file = "FemaleLiver-01-dataInput.RData")
-
