@@ -1,0 +1,9 @@
+#Include rules
+
+#Import JSON configuration file
+
+#Define rules outputs and inputs
+
+#Define logic to execute rules
+
+#Define last target
