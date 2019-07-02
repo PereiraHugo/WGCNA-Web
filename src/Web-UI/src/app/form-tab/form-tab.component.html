@@ -1,0 +1,26 @@
+<mat-form-field appearance="outline">
+  <mat-label> Name Experiment</mat-label>
+  <input matInput placeholder="Placeholder">
+  <mat-icon matSuffix>label</mat-icon>
+  <mat-hint><mat-icon matSuffix>help outline</mat-icon>Put a name global to compute the workflow</mat-hint>
+</mat-form-field>
+
+<br />
+<br />
+
+<!-- Inclure les choix dans le typescript-->
+<label id="action_type">Which type of effect have your external factor</label>
+<mat-radio-group aria-labelledby="action_type">
+    <mat-radio-button value="1">Positive Action</mat-radio-button>
+    <mat-radio-button value="2">Negative Action</mat-radio-button>
+</mat-radio-group>
+
+<br />
+<br />
+
+<!-- Inclure les choix dans le typescript-->
+<label id="separator_type">CSV format</label>
+<mat-radio-group aria-labelledby="separator_type">
+    <mat-radio-button value="french">French</mat-radio-button>
+    <mat-radio-button value="english">English</mat-radio-button>
+</mat-radio-group>

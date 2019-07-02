@@ -1,0 +1,37 @@
+<mat-tab-group [selectedIndex]="selected.value"
+               (selectedIndexChange)="selected.setValue($event)">
+  <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
+    <div *ngIf="tab=='Home'" class="example-large-box mat-elevation-z4">
+      <div>
+        <app-home-tab></app-home-tab>
+      </div>
+    </div>
+    <div *ngIf="tab=='Form'" class="example-large-box mat-elevation-z4">
+      <div>
+        <app-form-tab></app-form-tab>
+        <br />
+        <br />
+        <br />
+        <button mat-raised-button
+                class="example-add-tab-button"
+                (click)="addTab(selectAfterAdding.checked)">
+          Add new tab
+        </button>
+        <mat-checkbox #selectAfterAdding> Select tab after adding </mat-checkbox>
+      </div>
+    </div>
+
+    <div *ngIf="tab=='Results'" class="example-large-box mat-elevation-z4">
+      <div>
+        <app-result-tab></app-result-tab>
+        <button mat-raised-button
+          class="example-delete-tab-button"
+          [disabled]="tabs.length === 1"
+          (click)="removeTab(index)">
+          Delete Tab
+       </button>
+      </div>
+    </div>
+    
+  </mat-tab>
+</mat-tab-group>
